@@ -2,7 +2,7 @@
 //  MenuTableViewCell.swift
 //  4sFoods
 //
-//  Created by SAMEER KHAN on 21/06/16.
+//  Created by Saurabh Singh Rathore on 21/06/16.
 //  Copyright © 2016 wemo. All rights reserved.
 //
 
@@ -12,6 +12,12 @@ class MenuTableViewCell: UITableViewCell
 {
     @IBOutlet var imageVW : UIImageView!
     @IBOutlet var labelName : UILabel!
+    @IBOutlet var labelLine : UILabel!
+    @IBOutlet var viewBottom : UIView!
+    @IBOutlet var buttonLogout:UIButton!
+    
+
+
     
     override func awakeFromNib()
     {

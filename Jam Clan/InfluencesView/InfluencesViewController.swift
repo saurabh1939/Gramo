@@ -30,6 +30,13 @@ class InfluencesViewController: UIViewController {
     {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func buttonSkipClicked()
+    {
+                let otpVC:OTPViewController = OTPViewController(nibName:"OTPViewController", bundle:nil)
+                self.navigationController?.pushViewController(otpVC, animated: true)
+
+    }
 
     // MARK: UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,8 +58,8 @@ class InfluencesViewController: UIViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath)
     {
-        let studioDetail : StudioDetailViewController = StudioDetailViewController(nibName:"StudioDetailViewController", bundle:nil)
-        self.navigationController?.pushViewController(studioDetail, animated: true)
+//        let studioDetail : StudioDetailViewController = StudioDetailViewController(nibName:"StudioDetailViewController", bundle:nil)
+//        self.navigationController?.pushViewController(studioDetail, animated: true)
         
     }
 

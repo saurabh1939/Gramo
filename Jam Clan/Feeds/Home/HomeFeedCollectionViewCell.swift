@@ -9,6 +9,15 @@
 import UIKit
 
 class HomeFeedCollectionViewCell: UICollectionViewCell {
+    
+    @IBOutlet var buttonLike:UIButton!
+    @IBOutlet var buttonLikeCounts:UIButton!
+    @IBOutlet var buttonComment:UIButton!
+    @IBOutlet var buttonCommentCounts:UIButton!
+    @IBOutlet var buttonShare:UIButton!
+    @IBOutlet var buttonShareCounts:UIButton!
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

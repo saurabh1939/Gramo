@@ -8,12 +8,52 @@
 
 import UIKit
 
-class RateViewController: UIViewController {
+class RateViewController: UIViewController,FloatRatingViewDelegate,UITextViewDelegate {
+
+    @IBOutlet  var textViewRate:UITextView!
+    
+    @IBOutlet  var buttonSend:UIButton!
+
+    
+    @IBOutlet var floatRatingView: FloatRatingView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+     //   self.setup()
         // Do any additional setup after loading the view.
+    }
+    
+    func setup()
+    {
+        // Required float rating view params
+        self.floatRatingView.emptyImage = UIImage(named: "feed-gray-star")
+        self.floatRatingView.fullImage = UIImage(named: "feed-star")
+        // Optional params
+        self.floatRatingView.delegate = self
+        self.floatRatingView.contentMode = UIViewContentMode.scaleAspectFit
+        self.floatRatingView.maxRating = 5
+        self.floatRatingView.minRating = 1
+        self.floatRatingView.rating = 3
+        self.floatRatingView.editable = true
+        self.floatRatingView.halfRatings = true
+        self.floatRatingView.floatRatings = false
+        buttonSend.layer.cornerRadius=buttonSend.frame.size.height/2;
+
+        
+    }
+    
+    override func viewWillLayoutSubviews(){
+        self.setup()
+    }
+    
+    // MARK: FloatRatingViewDelegate
+    
+    func floatRatingView(_ ratingView: FloatRatingView, isUpdating rating:Float) {
+        // self.liveLabel.text = NSString(format: "%.2f", self.floatRatingView.rating) as String
+    }
+    
+    func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Float) {
+        //  self.updatedLabel.text = NSString(format: "%.2f", self.floatRatingView.rating) as String
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,15 +65,51 @@ class RateViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func animateViewMoving (up:Bool, moveValue :CGFloat)
+    {
+        let movementDuration:TimeInterval = 0.3
+        let movement:CGFloat = ( up ? -moveValue : moveValue)
+        UIView.beginAnimations( "animateView", context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        UIView.setAnimationDuration(movementDuration )
+        self.view.frame = self.view.frame.offsetBy(dx: 0,  dy: movement)
+        UIView.commitAnimations()
     }
-    */
 
+    // MARK: -UITEXTFIELD DELEGATES
+    func textViewDidBeginEditing(_ textView: UITextView)
+    {    //delegate method
+        animateViewMoving(up: true, moveValue: 100)
+        if textView.text=="write a review"
+        {
+            textView.text=""
+        }
+
+        
+        
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        animateViewMoving(up: false, moveValue: 100)
+    }
+    
+    
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool
+    {  //delegate method
+        return true
+    }
+    
+    func textViewShouldReturn(_ textView: UITextView) -> Bool
+    {   //delegate method
+        textView.resignFirstResponder()
+        return true
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 }

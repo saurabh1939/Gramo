@@ -15,7 +15,7 @@ class RootViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         let introVC : IntroViewController=IntroViewController(nibName:"IntroViewController",bundle:nil)
-        self.navigationController?.pushViewController(introVC, animated: true)
+        self.navigationController?.pushViewController(introVC, animated: false)
         
     }
 

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+
 
 class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
     
@@ -42,6 +44,11 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
     @IBOutlet var tableStudios:UITableView!
     @IBOutlet var collectionSortBy:UICollectionView!
 
+    var currentPage:Int = 0
+    var totalPages:Int = 0
+    var isNoData:Bool = false
+
+    var arrayItems : NSMutableArray!
 
 
 
@@ -49,10 +56,13 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.arrayItems = []
+
         self.registerNib()
 
         self.setUp()
+        currentPage=1
+        ApiGetStudios()
         
         // Do any additional setup after loading the view.
     }
@@ -108,8 +118,8 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
     
     @IBAction func buttonMusicPlayerClicked()
     {
-//        let musicPlayerHomeVC : MusicPlayerHomeViewController = MusicPlayerHomeViewController(nibName:"MusicPlayerHomeViewController", bundle:nil)
-//        self.navigationController?.pushViewController(musicPlayerHomeVC, animated: false)
+        let musicPlayerHomeVC : MusicPlayerHomeViewController = MusicPlayerHomeViewController(nibName:"MusicPlayerHomeViewController", bundle:nil)
+        self.navigationController?.pushViewController(musicPlayerHomeVC, animated: false)
         
     }
     
@@ -119,7 +129,14 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
         self.navigationController?.pushViewController(musicTripsHomeVC, animated: false)
         
     }
-
+    
+    @IBAction func buttonFeedsClicked()
+    {
+        let feedsHomeVC : HomeFeedsViewController = HomeFeedsViewController(nibName:"HomeFeedsViewController", bundle:nil)
+        self.navigationController?.pushViewController(feedsHomeVC, animated: false)
+        
+    }
+    
 
     
     
@@ -223,7 +240,12 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
     
     // MARK: UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        if self.arrayItems.count>0
+        {
+            return self.arrayItems.count
+            
+        }
+        return 0
     }
     
     // cell height
@@ -234,6 +256,33 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
     func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableStudios.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! HomeStudiosTableViewCell
+        
+        cell.labelName.text=""
+        cell.labelInstruments.text=""
+        cell.labelRating.text=""
+        cell.labelPrice.text=""
+        cell.imageItem.image=nil
+
+        
+        cell.labelName.text=((self.arrayItems[indexPath.row] as? NSDictionary )?.value(forKey: "info") as? NSDictionary)?.value(forKey: "name") as? String
+        
+        
+        if (((self.arrayItems[indexPath.row] as! NSDictionary).value(forKey: "info") as? NSDictionary)?.value(forKey: "coverPhoto") as! NSArray).count>0
+        {
+            
+            cell.imageItem.sd_setImage(with: URL(string: ((((self.arrayItems[indexPath.row] as? NSDictionary )?.value(forKey: "info") as? NSDictionary)?.value(forKey: "coverPhoto") as? NSArray)?.object(at: 0) as! NSDictionary).value(forKey: "url") as! String), placeholderImage: UIImage(named: "placeholder.png"))
+            
+        }
+        if (((self.arrayItems[indexPath.row] as! NSDictionary).value(forKey: "info") as? NSDictionary)?.value(forKey: "instruments") as! NSArray).count>0
+        {
+            cell.labelInstruments.text=((((self.arrayItems[indexPath.row] as! NSDictionary).value(forKey: "info") as? NSDictionary)?.value(forKey: "instruments") as! NSArray).value(forKey: "englishName") as AnyObject).componentsJoined(by: ", ")
+        }
+        
+        cell.labelRating.text = "\(String(describing: ((self.arrayItems[indexPath.row] as! NSDictionary ).value(forKey: "info") as! NSDictionary).value(forKey: "rating") as! Double))"
+        
+        cell.labelPrice.text = "\(String(describing: ((self.arrayItems[indexPath.row] as! NSDictionary ).value(forKey: "info") as! NSDictionary).value(forKey: "perHourCost") as! Double))/hr"
+        
+        
         cell.selectionStyle=UITableViewCellSelectionStyle.none
         return cell
     }
@@ -241,8 +290,21 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
      func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath)
      {
         let studioDetail : StudioDetailViewController = StudioDetailViewController(nibName:"StudioDetailViewController", bundle:nil)
+        studioDetail.strStudioId=((self.arrayItems[indexPath.row] as? NSDictionary )?.value(forKey: "info") as? NSDictionary)?.value(forKey: "_id") as! NSString
         self.navigationController?.pushViewController(studioDetail, animated: true)
 
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.row==self.arrayItems.count
+        {
+            if !isNoData {
+                currentPage=currentPage+1
+                ApiGetStudios()
+            }
+            
+        }
     }
 
     
@@ -275,6 +337,8 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? SortByCollectionViewCell
         cell?.layer.borderWidth=1.0
         cell?.layer.borderColor=UIColor(red: 203/255, green: 69/255, blue: 62/255, alpha: 1.0).cgColor
+        
+        
 
         
         
@@ -289,6 +353,98 @@ class HomeStudiosViewController: UIViewController,UICollectionViewDataSource,UIC
         
         
     }
+    
+    
+    func ApiGetStudios()
+    {
+        self.appDelegate.showHud(title: "Loading Studios...", sender: self.view)
+        let urlString = "/api/pageListing"
+        
+        
+        // pageType:event/studios/musictrip/band
+     //   page_no:1
+     //   userId:595e12c2fe387f21beada133
+        
+        let requestParam:Parameters = [
+            "pageType":"studios",
+            "page_no":currentPage,
+            "deviceType":kConstant.Constants.via,
+            "userId":"5982f692f1da7d1e12b18485",
+            "deviceToken":UserDefaults.standard.value(forKey: "deviceToken") as Any,
+            "userType":"user",
+            "authToken":UserDefaults.standard.value(forKey: "authToken") as Any,
+            "lat":UserDefaults.standard.value(forKey: "lat") as Any,
+            "long":UserDefaults.standard.value(forKey: "long") as Any
+
+            
+        ]
+        let headers: HTTPHeaders = HttpApiModel().header()
+        print("\(requestParam)")
+        Alamofire.request(kConstant.Constants.kBaseURL.appending(urlString), method: .post, parameters: requestParam, encoding:URLEncoding.default, headers: headers).responseJSON { (response:DataResponse<Any>) in
+            switch(response.result) {
+            case .success(_):
+                if response.response?.statusCode==200
+                {
+                    
+                    let dict = response.result.value as! NSDictionary
+                    
+                    var theJSONText:String! = ""
+                    
+                    do {
+                        let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+                        // here "jsonData" is the dictionary encoded in JSON data
+                        
+                        theJSONText = NSString(data: jsonData!,
+                                               encoding: String.Encoding.ascii.rawValue) as String!
+                    }
+                    
+                    print(theJSONText)
+                    
+                    
+                    let arrayTemp = (dict.object(forKey: "response") as! NSDictionary).value(forKey: "list") as! NSArray
+                  //  self.totalPages = (dict.object(forKey: "response") as! NSDictionary).value(forKey: "list") as! Int
+                    self.isNoData=false
+                    if arrayTemp.count > 0
+                    {
+                        self.arrayItems.addObjects(from: arrayTemp as! [Any])
+                        
+                        self.tableStudios.reloadData()
+                    }
+                    else
+                    {
+                    self.isNoData=true
+                    }
+                    
+                    
+                    //    let result = dict.object(forKey: "response") as! NSDictionary
+                    
+                    
+                    self.appDelegate.hideHud()
+                    
+                    
+                    
+                    
+                }
+                else
+                {
+                    self.appDelegate.showAlert(Title: response.result.value as? String ?? "errorMsg")
+                    self.appDelegate.hideHud()
+
+                }
+                break
+            case .failure(_):
+                print(response.result.error ?? "Response")
+                self.appDelegate.hideHud()
+
+                
+                break
+                
+            }
+            
+        }
+    }
+
+    
     
     
 }

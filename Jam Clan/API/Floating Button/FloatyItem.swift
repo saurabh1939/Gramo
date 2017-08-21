@@ -100,6 +100,11 @@ open class FloatyItem: UIView {
         didSet {
             titleLabel.text = title
             titleLabel.sizeToFit()
+            
+            
+            titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            
+
             titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
             titleLabel.frame.origin.y = self.size/2-titleLabel.frame.size.height/2
         }

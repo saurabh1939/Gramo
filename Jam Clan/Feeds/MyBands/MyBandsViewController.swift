@@ -9,10 +9,13 @@
 import UIKit
 
 class MyBandsViewController: UIViewController {
+    
+    @IBOutlet weak var tableMyBand:UITableView!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+           registerNib()
         // Do any additional setup after loading the view.
     }
 
@@ -21,15 +24,40 @@ class MyBandsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func registerNib()
+    {
+        let nibName = UINib(nibName: "MyBandTableViewCell", bundle:nil)
+        tableMyBand.register(nibName, forCellReuseIdentifier: "Cell")
+        
     }
-    */
+    
+
+    @IBAction func buttonBackClicked()
+    {
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    
+    // Table View Method :
+    // MARK: UITableView
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    // cell height
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell
+    {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! MyBandTableViewCell
+               
+        cell.selectionStyle=UITableViewCellSelectionStyle.none
+        return cell
+    }
+    
+
+    
 
 }

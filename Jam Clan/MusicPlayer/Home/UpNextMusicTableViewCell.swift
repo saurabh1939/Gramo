@@ -9,6 +9,10 @@
 import UIKit
 
 class UpNextMusicTableViewCell: UITableViewCell {
+    
+    @IBOutlet var imageSong:UIImageView!
+    @IBOutlet var labelSongName:UILabel!
+    @IBOutlet var labelSongArtist:UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

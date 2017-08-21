@@ -346,36 +346,54 @@ class CreateStudioViewController: UIViewController , UICollectionViewDataSource,
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CoverPhotoViewCell
         
-        if indexPath.row == 0
+        cell.imageCoverPhotoPlus.layer.cornerRadius=5
+        cell.buttonCross.isHidden=true
+        
+        if indexPath.row != 0
         {
-            cell.imageCoverPhoto.isHidden = true
-            cell.imageCoverPhoto.layer.cornerRadius = 5;
-            cell.imageCoverPhoto.layer.masksToBounds = true;
-            cell.buttonCross.isHidden = true
-        }
-        else
-        {
-//            cell.buttonCross.layer.cornerRadius = cell.buttonCross.frame.height/2
-//            cell.imageCoverPhotoPlus.isHidden = true
-//            cell.labelPlus.isHidden = true
-//            cell.imageCoverPhotoPlus.layer.cornerRadius = 5;
-//            cell.imageCoverPhotoPlus.layer.masksToBounds = true;
-            if collectionView == collectionviewCoverPhoto {
-                
-                if self.imageCoverArray.count > 0 && indexPath.row < self.imageCoverArray.count {
-                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageCoverArray.object(at: indexPath.row ) as! Data)
-                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
-                }
+            cell.imageCoverPhotoPlus.image=nil
+            cell.buttonCross.isHidden=false
+
+         
+            if collectionView==collectionviewCoverPhoto
+            {
+                  cell.imageCoverPhotoPlus.image = UIImage(data: self.imageCoverArray.object(at: indexPath.row-1 ) as! Data)
             }
             else
             {
-                if self.imageAddPhotoArray.count > 0 && indexPath.row < self.imageAddPhotoArray.count {
-                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageAddPhotoArray.object(at: indexPath.row ) as! Data)
-                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
-                }
+              cell.imageCoverPhotoPlus.image = UIImage(data: self.imageAddPhotoArray.object(at: indexPath.row-1 ) as! Data)
             }
-
+            
         }
+        
+        
+        
+//        if indexPath.row == 0
+//        {
+//            cell.imageCoverPhoto.isHidden = true
+//            cell.imageCoverPhoto.layer.cornerRadius = 5;
+//            cell.imageCoverPhoto.layer.masksToBounds = true;
+//            cell.buttonCross.isHidden = true
+//        }
+//        else
+//        {
+//
+//            if collectionView == collectionviewCoverPhoto {
+//                
+//                if self.imageCoverArray.count > 0 && indexPath.row < self.imageCoverArray.count {
+//                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageCoverArray.object(at: indexPath.row ) as! Data)
+//                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
+//                }
+//            }
+//            else
+//            {
+//                if self.imageAddPhotoArray.count > 0 && indexPath.row < self.imageAddPhotoArray.count {
+//                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageAddPhotoArray.object(at: indexPath.row ) as! Data)
+//                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
+//                }
+//            }
+//
+//        }
         
         
         return cell
@@ -383,39 +401,58 @@ class CreateStudioViewController: UIViewController , UICollectionViewDataSource,
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == collectionviewCoverPhoto {
-            if !(self.imageCoverArray.count > 0) || (indexPath.row == self.imageCoverArray.count) {
-                if self.imageCoverArray.count == 5 {
-                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
-                    }
-                    alert.addAction(okActionButton)
-                    self.present(alert, animated: true, completion: nil)
-                }
-                else
-                {
-                    selecttedImage = true
-                    self.openAlertPopup()
-                }
-            }
+        
+        
+        if collectionView==collectionviewCoverPhoto
+        {
+            imageCoverArray.removeAllObjects()
+            selecttedImage = true
+            self.openAlertPopup()
         }
         else
         {
-            if !(self.imageAddPhotoArray.count > 0) || (indexPath.row == self.imageAddPhotoArray.count) {
-                if self.imageAddPhotoArray.count == 5 {
-                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
-                    }
-                    alert.addAction(okActionButton)
-                    self.present(alert, animated: true, completion: nil)
-                }
-                else
-                {
-                    selecttedImage = false
-                    self.openAlertPopup()
-                }
-            }
+            selecttedImage = false
+            self.openAlertPopup()
+
         }
+        
+        
+        
+        
+//        if collectionView == collectionviewCoverPhoto
+//        {
+//            if !(self.imageCoverArray.count > 0) || (indexPath.row == self.imageCoverArray.count) {
+//                if self.imageCoverArray.count == 5 {
+//                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
+//                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
+//                    }
+//                    alert.addAction(okActionButton)
+//                    self.present(alert, animated: true, completion: nil)
+//                }
+//                else
+//                {
+//                    selecttedImage = true
+//                    self.openAlertPopup()
+//                }
+//            }
+//        }
+//        else
+//        {
+//            if !(self.imageAddPhotoArray.count > 0) || (indexPath.row == self.imageAddPhotoArray.count) {
+//                if self.imageAddPhotoArray.count == 5 {
+//                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
+//                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
+//                    }
+//                    alert.addAction(okActionButton)
+//                    self.present(alert, animated: true, completion: nil)
+//                }
+//                else
+//                {
+//                    selecttedImage = false
+//                    self.openAlertPopup()
+//                }
+//            }
+//        }
         
         }
 
@@ -526,6 +563,8 @@ class CreateStudioViewController: UIViewController , UICollectionViewDataSource,
         
         self.datepicker.isHidden = true
         self.toolbar.isHidden = true
+        self.view.endEditing(true)
+
     }
     
     @IBAction func cancelPressed(){
@@ -533,7 +572,7 @@ class CreateStudioViewController: UIViewController , UICollectionViewDataSource,
         self.datepicker.isHidden = true
         self.toolbar.isHidden = true
         selecttedDate = false
-        // self.view.endEditing(true)
+         self.view.endEditing(true)
         
     }
     
@@ -554,6 +593,8 @@ class CreateStudioViewController: UIViewController , UICollectionViewDataSource,
         
         self.datepicker.isHidden = true
         self.toolbarTime.isHidden = true
+        self.view.endEditing(true)
+
     }
     
     @IBAction func cancelTimePressed(){
@@ -561,7 +602,7 @@ class CreateStudioViewController: UIViewController , UICollectionViewDataSource,
         self.datepicker.isHidden = true
         self.toolbarTime.isHidden = true
         selecttedDate = false
-        // self.view.endEditing(true)
+         self.view.endEditing(true)
         
     }
 

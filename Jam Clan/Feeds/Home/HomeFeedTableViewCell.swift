@@ -9,10 +9,29 @@
 import UIKit
 
 class HomeFeedTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var collectionFeed: UICollectionView!
+    @IBOutlet var imageProfile:UIImageView!
+    @IBOutlet var labelName:UILabel!
+    @IBOutlet var labelTime:UILabel!
+    @IBOutlet var buttonMore:UIButton!
+
+
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.registerNib()
+    }
+    
+    func registerNib()
+    {
+        let nibNameCollectionCheck=UINib(nibName:"HomeFeedCollectionViewCell", bundle:nil)
+        collectionFeed.register(nibNameCollectionCheck, forCellWithReuseIdentifier:"cell")
+        
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

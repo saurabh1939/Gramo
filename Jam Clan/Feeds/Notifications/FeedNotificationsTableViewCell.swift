@@ -9,6 +9,10 @@
 import UIKit
 
 class FeedNotificationsTableViewCell: UITableViewCell {
+    
+    @IBOutlet var imageProfile:UIImageView!
+    @IBOutlet var labelText:UILabel!
+    @IBOutlet var labelTime:UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

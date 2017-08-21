@@ -10,6 +10,10 @@ import UIKit
 
 class ServicesTableViewCell: UITableViewCell {
 
+    @IBOutlet var labelName:UILabel!
+    @IBOutlet var buttonCheck:UIButton!
+
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

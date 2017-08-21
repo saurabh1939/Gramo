@@ -9,6 +9,13 @@
 import UIKit
 
 class InstrumentsTableViewCell: UITableViewCell {
+    
+    @IBOutlet var labelName:UILabel!
+    @IBOutlet var buttonCheck:UIButton!
+    @IBOutlet var imageInstruments:UIImageView!
+
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

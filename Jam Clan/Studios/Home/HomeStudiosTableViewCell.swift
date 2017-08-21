@@ -9,6 +9,18 @@
 import UIKit
 
 class HomeStudiosTableViewCell: UITableViewCell {
+    
+    @IBOutlet var labelName:UILabel!
+    @IBOutlet var labelInstruments:UILabel!
+    @IBOutlet var labelTime:UILabel!
+    @IBOutlet var labelPrice:UILabel!
+    @IBOutlet var labelRating:UILabel!
+    @IBOutlet var imageItem:UIImageView!
+
+
+
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

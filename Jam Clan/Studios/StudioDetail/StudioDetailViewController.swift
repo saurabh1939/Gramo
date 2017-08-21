@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import Alamofire
+
 
 class StudioDetailViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,FloatRatingViewDelegate {
     
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
     @IBOutlet var scrollMain:UIScrollView!
     
     @IBOutlet var viewTop:UIView!
@@ -37,6 +42,18 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
     var arraySuggestedPrice: NSMutableArray!
     @IBOutlet var textviewDescription: UITextView!
     @IBOutlet var floatRatingView: FloatRatingView!
+    
+    @IBOutlet var viewPopUp:UIView!
+    @IBOutlet var viewPlusOpen:UIView!
+    @IBOutlet var viewPrice:UIView!
+
+    var arrayItems : NSMutableArray!
+    
+    var dictData : NSMutableDictionary!
+    
+    var strStudioId:NSString!
+
+
    
     
     fileprivate var collectionViewDataSource: CollectionViewDataSource!
@@ -46,6 +63,9 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
         super.viewDidLoad()
         // Configure collection view
         
+        self.arrayItems = []
+        self.dictData=[:]
+
         collectionViewDataSource = CollectionViewDataSource(collectionView: collectionView)
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.Const.ReuseIdentifier)
         collectionView.dataSource = collectionViewDataSource
@@ -56,6 +76,7 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
         arraySuggestedPrice = ["$0", "$3,400", "$5,000", "$6,500", "$10,000", "$11,000"]
         arrayCheckTime = ["10-11AM", "11-12AM", "1-12PM", "2-3PM", "4-5PM", "5-6PM"]
         self.registerNib()
+        ApiGetStudioDetail()
         
     }
     
@@ -80,6 +101,52 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
     {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    
+    @IBAction func buttonBackgroundClicked()
+    {
+        viewPopUp.isHidden=true
+        viewPrice.isHidden=true
+        viewPlusOpen.isHidden=true
+        
+    }
+    
+    @IBAction func buttonBottomClicked()
+    {
+        viewPopUp.isHidden=false
+        viewPrice.isHidden=false
+    }
+    
+    @IBAction func buttonSlideClicked()
+    {
+     //   viewPopUp.isHidden=false
+      //  viewBookingConfirmed.isHidden=false
+        
+    }
+    
+    @IBAction func buttonPlusClicked()
+    {
+        viewPrice.isHidden=true
+        viewPopUp.isHidden=false
+        viewPlusOpen.isHidden=false
+    }
+
+    @IBAction func buttonFeedbackclicked()
+    {
+        let feedbackVC : FeedbackViewController = FeedbackViewController(nibName:"FeedbackViewController", bundle:nil)
+        self.navigationController?.pushViewController(feedbackVC, animated: true)
+      //  self.HideViewPopUp()
+        viewPopUp.isHidden=true
+    }
+    
+    @IBAction func buttonRateclicked()
+    {
+    let rateVC : RateViewController = RateViewController(nibName:"RateViewController", bundle:nil)
+    self.navigationController?.pushViewController(rateVC, animated: true)
+        viewPopUp.isHidden=true
+
+    }
+    
 
     override func viewWillLayoutSubviews(){
         self.setup()
@@ -106,8 +173,41 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
     
     func setup()
     {
-        scrollMain.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        scrollMain.contentSize=CGSize(width: UIScreen.main.bounds.width, height: 1700)
+        
+        
+        scrollMain.frame=CGRect(x: 0, y: -20, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height+20)
+        viewTop.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 250)
+        viewServices.frame=CGRect(x: 0, y: viewTop.frame.origin.y+viewTop.frame.size.height+2, width: UIScreen.main.bounds.width, height: 95)
+        viewAvailability.frame=CGRect(x: 0, y: viewServices.frame.origin.y+viewServices.frame.size.height+2, width: UIScreen.main.bounds.width, height: 140)
+        viewPackages.frame=CGRect(x: 0, y: viewAvailability.frame.origin.y+viewAvailability.frame.size.height+2, width: UIScreen.main.bounds.width, height: 255)
+        viewDescription.frame=CGRect(x: 0, y: viewPackages.frame.origin.y+viewPackages.frame.size.height+2, width: UIScreen.main.bounds.width, height: 110)
+        viewMedia.frame=CGRect(x: 0, y: viewDescription.frame.origin.y+viewDescription.frame.size.height+2, width: UIScreen.main.bounds.width, height: 145)
+        viewInstruments.frame=CGRect(x: 0, y: viewMedia.frame.origin.y+viewMedia.frame.size.height+2, width: UIScreen.main.bounds.width, height: 180)
+        
+        
+        
+        viewAddReview.frame=CGRect(x: 0, y: 40, width: UIScreen.main.bounds.width, height: 80)
+        tableReview.frame=CGRect(x: 0, y: viewAddReview.frame.origin.y+viewAddReview.frame.size.height+2, width: UIScreen.main.bounds.width, height: 100*2)
+        buttonViewAllReviews.frame=CGRect(x: 0, y: tableReview.frame.origin.y+tableReview.frame.size.height+2, width: UIScreen.main.bounds.width, height: 40)
+        viewReview.frame=CGRect(x: 0, y: viewInstruments.frame.origin.y+viewInstruments.frame.size.height+2, width: UIScreen.main.bounds.width, height: buttonViewAllReviews.frame.origin.y+buttonViewAllReviews.frame.size.height+5)
+        
+        viewContact.frame=CGRect(x: 0, y: viewReview.frame.origin.y+viewReview.frame.size.height+2, width: UIScreen.main.bounds.width, height: 190)
+        viewSlide.frame=CGRect(x: 0, y: viewContact.frame.origin.y+viewContact.frame.size.height+2, width: UIScreen.main.bounds.width, height: 60)
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        scrollMain.contentSize=CGSize(width: UIScreen.main.bounds.width, height: viewSlide.frame.origin.y+viewSlide.frame.size.height)
         
         // Required float rating view params
         self.floatRatingView.emptyImage = UIImage(named: "feed-gray-star")
@@ -235,7 +335,7 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
     // Table View Method :
     // MARK: UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     // cell height
@@ -249,5 +349,83 @@ class StudioDetailViewController: UIViewController, UICollectionViewDataSource,U
         cell.selectionStyle=UITableViewCellSelectionStyle.none
         return cell
     }
+    
+    
+    func ApiGetStudioDetail()
+    {
+        self.appDelegate.showHud(title: "Loading Studios...", sender: self.view)
+        let urlString = "/api/pages/"
+        
+        
+        // pageType:event/studios/musictrip/band
+        //   page_no:1
+        //   userId:595e12c2fe387f21beada133
+        
+        let requestParam:Parameters = [
+            "pageId":self.strStudioId,
+            "deviceType":kConstant.Constants.via,
+            "userId":"5982f692f1da7d1e12b18485",
+            "deviceToken":UserDefaults.standard.value(forKey: "deviceToken") as Any,
+            "authToken":UserDefaults.standard.value(forKey: "authToken")!,
+            "lat":UserDefaults.standard.value(forKey: "lat") as Any,
+            "long":UserDefaults.standard.value(forKey: "long") as Any
+            
+            
+        ]
+        let headers: HTTPHeaders = HttpApiModel().header()
+        print("\(requestParam)")
+        Alamofire.request(kConstant.Constants.kBaseURL.appending(urlString), method: .post, parameters: requestParam, encoding:URLEncoding.default, headers: headers).responseJSON { (response:DataResponse<Any>) in
+            switch(response.result) {
+            case .success(_):
+                if response.response?.statusCode==200
+                {
+                    
+                    let dict = response.result.value as! NSDictionary
+                    
+                    var theJSONText:String! = ""
+                    
+                    do {
+                        let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+                        // here "jsonData" is the dictionary encoded in JSON data
+                        
+                        theJSONText = NSString(data: jsonData!,
+                                               encoding: String.Encoding.ascii.rawValue) as String!
+                    }
+                    
+                    print(theJSONText)
+                    
+                    
+             //       self.dictData = (dict.object(forKey: "response") as! NSMutableDictionary)
+                    //  self.totalPages = (dict.object(forKey: "response") as! NSDictionary).value(forKey: "list") as! Int
+                    
+                    
+                    //    let result = dict.object(forKey: "response") as! NSDictionary
+                    
+                    
+                    self.appDelegate.hideHud()
+                    
+                    
+                    
+                    
+                }
+                else
+                {
+                    self.appDelegate.showAlert(Title: response.result.value as? String ?? "errorMsg")
+                    self.appDelegate.hideHud()
+                    
+                }
+                break
+            case .failure(_):
+                print(response.result.error ?? "Response")
+                self.appDelegate.hideHud()
+                
+                
+                break
+                
+            }
+            
+        }
+    }
+    
 
 }

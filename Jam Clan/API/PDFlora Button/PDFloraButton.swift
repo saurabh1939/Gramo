@@ -24,10 +24,13 @@ func getRadian(degree: CGFloat) -> CGFloat {
         return CGFloat(degree * CGFloat(M_PI)/180)
 }
 
+//floraButton.setImage(UIImage(named: "addfeed.png"), for: UIControlState())
+
+
 class PDFloraButton: UIButton {
     
-    fileprivate let radius: CGFloat = 100.0
-    fileprivate let childButtonSize: CGFloat = 80.0
+    fileprivate let radius: CGFloat = 90.0
+    fileprivate let childButtonSize: CGFloat = 65.0
     fileprivate let circumference: CGFloat = 360.0
     fileprivate let delayInterval = 0.0
     fileprivate let duration = 0.25
@@ -49,7 +52,7 @@ class PDFloraButton: UIButton {
     
     convenience init(withPosition position: ButtonPosition, size: CGFloat, numberOfPetals: Int, images: [String]) {
        
-        self.init(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        self.init(frame: CGRect(x: -100, y: -100, width: size, height: size))
         self.layer.cornerRadius = size/2.0
        
         childButtons = numberOfPetals
@@ -58,24 +61,24 @@ class PDFloraButton: UIButton {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.01 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             switch position {
-            case .topLeft:
-                self.center = CGPoint(x: (self.superview?.frame)!.minX+(size/2.0)+self.xPadding, y: (self.superview?.frame)!.minY+(size/2.0)+self.yPadding)
-            case .topRight:
-                self.center = CGPoint(x: (self.superview?.frame)!.maxX-(size/2.0)-self.xPadding, y: (self.superview?.frame)!.minY+(size/2.0)+self.yPadding)
-            case .bottomLeft:
-                self.center = CGPoint(x: (self.superview?.frame)!.minX+(size/2.0)+self.xPadding, y: (self.superview?.frame)!.maxY-(size/2.0)-self.yPadding)
+//            case .topLeft:
+//                self.center = CGPoint(x: (self.superview?.frame)!.minX+(size/2.0)+self.xPadding, y: (self.superview?.frame)!.minY+(size/2.0)+self.yPadding)
+//            case .topRight:
+//                self.center = CGPoint(x: (self.superview?.frame)!.maxX-(size/2.0)-self.xPadding, y: (self.superview?.frame)!.minY+(size/2.0)+self.yPadding)
+//            case .bottomLeft:
+//                self.center = CGPoint(x: (self.superview?.frame)!.minX+(size/2.0)+self.xPadding, y: (self.superview?.frame)!.maxY-(size/2.0)-self.yPadding)
             case .bottomRight:
                 self.center = CGPoint(x: (self.superview?.frame.size.width)!/2, y: (self.superview?.frame.size.height)!-40)
-            case .midTop:
-                self.center = CGPoint(x: (self.superview?.frame)!.midX, y: (self.superview?.frame)!.minY+(size/2.0)+self.yPadding)
-            case .midBottom:
-                self.center = CGPoint(x: (self.superview?.frame)!.midX, y: (self.superview?.frame)!.maxY-(size/2.0)-self.yPadding)
-            case .midLeft:
-                self.center = CGPoint(x: (self.superview?.frame)!.minX+(size/2.0)+self.xPadding, y: (self.superview?.frame)!.midY)
-            case .midRight:
-                self.center = CGPoint(x: (self.superview?.frame)!.maxX-(size/2.0)-(self.xPadding), y: (self.superview?.frame)!.midY)
+//            case .midTop:
+//                self.center = CGPoint(x: (self.superview?.frame)!.midX, y: (self.superview?.frame)!.minY+(size/2.0)+self.yPadding)
+//            case .midBottom:
+//                self.center = CGPoint(x: (self.superview?.frame)!.midX, y: (self.superview?.frame)!.maxY-(size/2.0)-self.yPadding)
+//            case .midLeft:
+//                self.center = CGPoint(x: (self.superview?.frame)!.minX+(size/2.0)+self.xPadding, y: (self.superview?.frame)!.midY)
+//            case .midRight:
+//                self.center = CGPoint(x: (self.superview?.frame)!.maxX-(size/2.0)-(self.xPadding), y: (self.superview?.frame)!.midY)
             default:
-                self.center = CGPoint(x: (self.superview?.frame)!.midX, y: (self.superview?.frame)!.midY)
+                self.center = CGPoint(x: (self.superview?.frame.size.width)!/2, y: (self.superview?.frame.size.height)!-40)
             }
             self.anchorPoint = self.center
             self.createButtons(numbers: numberOfPetals)
@@ -84,7 +87,8 @@ class PDFloraButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .brown
+     //   backgroundColor = .brown
+        
         self.addTarget(self, action: #selector(self.animateChildButtons(_:)), for: .touchUpInside)
     }
     
@@ -98,13 +102,13 @@ class PDFloraButton: UIButton {
             let petal = UIButton(frame: CGRect(x: 0, y: 0, width: childButtonSize, height: childButtonSize))
             petal.center = self.center
             petal.layer.cornerRadius = childButtonSize/2.0
-            petal.backgroundColor = UIColor.cyan
+         //   petal.backgroundColor = UIColor.cyan
             petal.setTitleColor(UIColor.black, for: UIControlState())
             petal.tag = index
             if index < imageArray.count {
              petal.setImage(UIImage(named: imageArray[index]), for: UIControlState())
             }
-            petal.setTitle(String(index), for: UIControlState())
+       //     petal.setTitle(String(index), for: UIControlState())
             petal.addTarget(self, action: #selector(self.buttonAction(_:)), for: .touchUpInside)
             self.superview?.addSubview(petal)
             self.superview?.bringSubview(toFront: self)
@@ -117,6 +121,8 @@ class PDFloraButton: UIButton {
         scaleAnimate(sender)
         self.isUserInteractionEnabled = false
         if !isOpen {
+            self.setImage(UIImage(named: "double-crclose.png"), for: UIControlState())
+
             switch buttonPosition {
             case .topLeft:
                 self.presentationForTopLeft()
@@ -138,6 +144,9 @@ class PDFloraButton: UIButton {
                 self.presentationForCenter()
             }
         }else{
+            self.setImage(UIImage(named: "addfeed.png"), for: UIControlState())
+
+
             closeButtons()
         }
     }
@@ -147,10 +156,10 @@ class PDFloraButton: UIButton {
         UIView.animate(withDuration: self.duration, animations: { 
             sender.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             }, completion: { (completion) in
-                UIView.animate(withDuration: self.duration, animations: { 
+                UIView.animate(withDuration: self.duration, animations: {
                     sender.transform = CGAffineTransform.identity
                 })
-        }) 
+        })
     }
     
     // Center

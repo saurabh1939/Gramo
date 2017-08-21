@@ -1,0 +1,6 @@
+framework module Pods_Jam_Clan {
+  umbrella header "Pods-Jam Clan-umbrella.h"
+
+  export *
+  module * { export * }
+}

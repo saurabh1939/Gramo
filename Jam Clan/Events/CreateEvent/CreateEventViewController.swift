@@ -26,7 +26,7 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     @IBOutlet var viewEndDate:UIView!
     @IBOutlet var viewEndTime:UIView!
     @IBOutlet var viewServices:UIView!
-    @IBOutlet var viewInstruments:UIView!
+    @IBOutlet var viewClub:UIView!
     @IBOutlet var viewHourCost:UIView!
     @IBOutlet var viewDayCost:UIView!
     @IBOutlet var viewAddPackage:UIView!
@@ -72,7 +72,7 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     var selecttedDate:Bool = false
     var selecttedTime:Bool = false
     
-    // Time Pocker
+    // Time Picker
     @IBOutlet var textfieldStartTime: UITextField!
     @IBOutlet var textfieldEndTime: UITextField!
     let time_picker  = UIDatePicker()
@@ -109,17 +109,12 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
             self.collectionviewAddPhoto.scrollToItem(at: IndexPath(item:self.imageAddPhotoArray.count-1 , section:0), at: .centeredHorizontally, animated: true)
         }
         
-        // imageAddPhotoArray
     }
     func registerNib()
     {
-        let nibName = UINib(nibName: "AddPackageTableViewCell", bundle:nil)
-        tablePackages.register(nibName, forCellReuseIdentifier: "Cell")
-        
         let nibNameCollectionCheck=UINib(nibName:"CoverPhotoViewCell", bundle:nil)
         collectionviewCoverPhoto.register(nibNameCollectionCheck, forCellWithReuseIdentifier:"cell")
         collectionviewAddPhoto.register(nibNameCollectionCheck, forCellWithReuseIdentifier:"cell")
-        
     }
     
     
@@ -128,61 +123,29 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     {
         viewName.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 75)
         viewDescription.frame=CGRect(x: 0, y:viewName.frame.origin.y + viewName.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        viewEmail.frame=CGRect(x: 0, y:viewDescription.frame.origin.y + viewDescription.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        viewLocation.frame=CGRect(x: 0, y:viewEmail.frame.origin.y + viewEmail.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        viewPhone.frame=CGRect(x: 0, y:viewLocation.frame.origin.y + viewLocation.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        viewWebsite.frame=CGRect(x: 0, y:viewPhone.frame.origin.y + viewPhone.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        viewCoverPhoto.frame=CGRect(x: 0, y:viewWebsite.frame.origin.y + viewWebsite.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 100)
+        viewClub.frame=CGRect(x: 0, y:viewDescription.frame.origin.y + viewDescription.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
+        viewLocation.frame=CGRect(x: 0, y:viewClub.frame.origin.y + viewClub.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
+                viewHourCost.frame=CGRect(x: 0, y:viewLocation.frame.origin.y + viewLocation.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
+        viewDayCost.frame=CGRect(x: UIScreen.main.bounds.width/2+2, y:viewLocation.frame.origin.y + viewLocation.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
+        
+        viewCoverPhoto.frame=CGRect(x: 0, y:viewDayCost.frame.origin.y + viewDayCost.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 100)
         viewAddPhoto.frame=CGRect(x: 0, y:viewCoverPhoto.frame.origin.y + viewCoverPhoto.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 100
         )
         
         viewStartDate.frame=CGRect(x: 0, y:viewAddPhoto.frame.origin.y + viewAddPhoto.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
         viewStartTime.frame=CGRect(x: UIScreen.main.bounds.width/2+2, y:viewAddPhoto.frame.origin.y + viewAddPhoto.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
-        
         viewEndDate.frame=CGRect(x: 0, y:viewStartDate.frame.origin.y + viewStartDate.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
         viewEndTime.frame=CGRect(x: UIScreen.main.bounds.width/2+2, y:viewStartDate.frame.origin.y + viewStartDate.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
         
-        viewServices.frame=CGRect(x: 0, y:viewEndDate.frame.origin.y + viewEndDate.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        viewInstruments.frame=CGRect(x: 0, y:viewServices.frame.origin.y + viewServices.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 75)
-        
-        viewHourCost.frame=CGRect(x: 0, y:viewInstruments.frame.origin.y + viewInstruments.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
-        viewDayCost.frame=CGRect(x: UIScreen.main.bounds.width/2+2, y:viewInstruments.frame.origin.y + viewInstruments.frame.size.height + 2, width: UIScreen.main.bounds.width/2, height: 75)
-        
-        viewAddPackage.frame=CGRect(x: 0, y:viewDayCost.frame.origin.y + viewDayCost.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 160)
-        viewBottom.frame=CGRect(x: 0, y:viewAddPackage.frame.origin.y + viewAddPackage.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 135)
+        viewBottom.frame=CGRect(x: 0, y:viewEndTime.frame.origin.y + viewEndTime.frame.size.height + 2, width: UIScreen.main.bounds.width, height: 135)
         
         scrollMain.contentSize=CGSize(width: 0, height: viewBottom.frame.origin.y+viewBottom.frame.size.height)
         buttonCreateStudio.layer.cornerRadius=buttonCreateStudio.frame.size.height/2;
         
-        
-        
-        //textStudioName.attributedPlaceholder = NSAttributedString(string: textStudioName.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.clear])
-        
-        //  textDescripition.attributedPlaceholder = NSAttributedString(string: textDescripition.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        //  textEmailId.attributedPlaceholder = NSAttributedString(string: textEmailId.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        //  textClubLocation.attributedPlaceholder = NSAttributedString(string: textClubLocation.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        //  textPhoneNo.attributedPlaceholder = NSAttributedString(string: textPhoneNo.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        //  textWebside.attributedPlaceholder = NSAttributedString(string: textWebside.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        
-        // textStdioServices.attributedPlaceholder = NSAttributedString(string: textStdioServices.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        
-        // textStudioInstruments.attributedPlaceholder = NSAttributedString(string: textStudioInstruments.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        
-        // textPerHourCost.attributedPlaceholder = NSAttributedString(string: textPerHourCost.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        
-        // textPerDayCost.attributedPlaceholder = NSAttributedString(string: textPerDayCost.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.white])
-        
-        
         textStudioName.inputAccessoryView = toolBarKeyBoard
         textDescripition.inputAccessoryView = toolBarKeyBoard
-        textEmailId.inputAccessoryView = toolBarKeyBoard
         textClubLocation.inputAccessoryView = toolBarKeyBoard
-        textPhoneNo.inputAccessoryView = toolBarKeyBoard
-        textWebside.inputAccessoryView = toolBarKeyBoard
-        
-        textStdioServices.inputAccessoryView = toolBarKeyBoard
         textStudioInstruments.inputAccessoryView = toolBarKeyBoard
-        
         textPerHourCost.inputAccessoryView = toolBarKeyBoard
         textPerDayCost.inputAccessoryView = toolBarKeyBoard
         
@@ -206,20 +169,6 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
         
     }
     
-    //    func cancelStudioName()
-    //    {
-    //        textStudioName.textColor=UIColor.white
-    //        buttonStudioName.isHidden=true
-    //    }
-    //
-    //    @IBAction func buttonStudioNameCrossClicked()
-    //    {
-    //        cancelStudioName()
-    //        textStudioName.text=""
-    //
-    //    }
-    
-    
     @IBAction func buttonBackClicked()
     {
         self.navigationController?.popViewController(animated: true)
@@ -227,7 +176,13 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     
     @IBAction func buttonAddPackageClicked()
     {
+    }
+    
+    @IBAction func butonind()
+    {
         
+        let InflucesVC : InfluencesViewController = InfluencesViewController(nibName:"InfluencesViewController", bundle:nil)
+        self.navigationController?.pushViewController(InflucesVC, animated: true)
     }
     
     @IBAction func buttonCreateStudioClicked()
@@ -238,32 +193,6 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     {
         self.view.endEditing(true)
     }
-    
-    // MARK: UITableView
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    
-    // cell height
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell
-    {
-        let cell = tablePackages.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! AddPackageTableViewCell
-        cell.selectionStyle=UITableViewCellSelectionStyle.none
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath)
-    {
-        let studioDetail : StudioDetailViewController = StudioDetailViewController(nibName:"StudioDetailViewController", bundle:nil)
-        self.navigationController?.pushViewController(studioDetail, animated: true)
-        
-    }
-    
     
     // Start Editing The Text Field
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -279,17 +208,11 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     {
         
         let moveDuration = 0.3
-        
         let movement: CGFloat = CGFloat(up ? moveDistance : -moveDistance)
-        
         UIView.beginAnimations("animateTextField", context: nil)
-        
         UIView.setAnimationBeginsFromCurrentState(true)
-        
         UIView.setAnimationDuration(moveDuration)
-        
         self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
-        
         UIView.commitAnimations()
         
     }
@@ -345,36 +268,54 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CoverPhotoViewCell
         
-        if indexPath.row == 0
+        cell.imageCoverPhotoPlus.layer.cornerRadius=5
+        cell.buttonCross.isHidden=true
+        
+        if indexPath.row != 0
         {
-            cell.imageCoverPhoto.isHidden = true
-            cell.imageCoverPhoto.layer.cornerRadius = 5;
-            cell.imageCoverPhoto.layer.masksToBounds = true;
-            cell.buttonCross.isHidden = true
-        }
-        else
-        {
-            //            cell.buttonCross.layer.cornerRadius = cell.buttonCross.frame.height/2
-            //            cell.imageCoverPhotoPlus.isHidden = true
-            //            cell.labelPlus.isHidden = true
-            //            cell.imageCoverPhotoPlus.layer.cornerRadius = 5;
-            //            cell.imageCoverPhotoPlus.layer.masksToBounds = true;
-            if collectionView == collectionviewCoverPhoto {
-                
-                if self.imageCoverArray.count > 0 && indexPath.row < self.imageCoverArray.count {
-                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageCoverArray.object(at: indexPath.row ) as! Data)
-                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
-                }
+            cell.imageCoverPhotoPlus.image=nil
+            cell.buttonCross.isHidden=false
+            
+            
+            if collectionView==collectionviewCoverPhoto
+            {
+                cell.imageCoverPhotoPlus.image = UIImage(data: self.imageCoverArray.object(at: indexPath.row-1 ) as! Data)
             }
             else
             {
-                if self.imageAddPhotoArray.count > 0 && indexPath.row < self.imageAddPhotoArray.count {
-                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageAddPhotoArray.object(at: indexPath.row ) as! Data)
-                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
-                }
+                cell.imageCoverPhotoPlus.image = UIImage(data: self.imageAddPhotoArray.object(at: indexPath.row-1 ) as! Data)
             }
             
         }
+        
+        
+        
+        //        if indexPath.row == 0
+        //        {
+        //            cell.imageCoverPhoto.isHidden = true
+        //            cell.imageCoverPhoto.layer.cornerRadius = 5;
+        //            cell.imageCoverPhoto.layer.masksToBounds = true;
+        //            cell.buttonCross.isHidden = true
+        //        }
+        //        else
+        //        {
+        //
+        //            if collectionView == collectionviewCoverPhoto {
+        //
+        //                if self.imageCoverArray.count > 0 && indexPath.row < self.imageCoverArray.count {
+        //                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageCoverArray.object(at: indexPath.row ) as! Data)
+        //                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if self.imageAddPhotoArray.count > 0 && indexPath.row < self.imageAddPhotoArray.count {
+        //                    cell.imageCoverPhotoPlus.image = UIImage(data: self.imageAddPhotoArray.object(at: indexPath.row ) as! Data)
+        //                    cell.imageCoverPhotoPlus.layer.cornerRadius = 5.0
+        //                }
+        //            }
+        //
+        //        }
         
         
         return cell
@@ -382,39 +323,58 @@ class CreateEventViewController: UIViewController , UICollectionViewDataSource,U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == collectionviewCoverPhoto {
-            if !(self.imageCoverArray.count > 0) || (indexPath.row == self.imageCoverArray.count) {
-                if self.imageCoverArray.count == 5 {
-                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
-                    }
-                    alert.addAction(okActionButton)
-                    self.present(alert, animated: true, completion: nil)
-                }
-                else
-                {
-                    selecttedImage = true
-                    self.openAlertPopup()
-                }
-            }
+        
+        
+        if collectionView==collectionviewCoverPhoto
+        {
+            imageCoverArray.removeAllObjects()
+            selecttedImage = true
+            self.openAlertPopup()
         }
         else
         {
-            if !(self.imageAddPhotoArray.count > 0) || (indexPath.row == self.imageAddPhotoArray.count) {
-                if self.imageAddPhotoArray.count == 5 {
-                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
-                    }
-                    alert.addAction(okActionButton)
-                    self.present(alert, animated: true, completion: nil)
-                }
-                else
-                {
-                    selecttedImage = false
-                    self.openAlertPopup()
-                }
-            }
+            selecttedImage = false
+            self.openAlertPopup()
+            
         }
+        
+        
+        
+        
+        //        if collectionView == collectionviewCoverPhoto
+        //        {
+        //            if !(self.imageCoverArray.count > 0) || (indexPath.row == self.imageCoverArray.count) {
+        //                if self.imageCoverArray.count == 5 {
+        //                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        //                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
+        //                    }
+        //                    alert.addAction(okActionButton)
+        //                    self.present(alert, animated: true, completion: nil)
+        //                }
+        //                else
+        //                {
+        //                    selecttedImage = true
+        //                    self.openAlertPopup()
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if !(self.imageAddPhotoArray.count > 0) || (indexPath.row == self.imageAddPhotoArray.count) {
+        //                if self.imageAddPhotoArray.count == 5 {
+        //                    let alert = UIAlertController(title: "You can upload up to 5 images.", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        //                    let okActionButton = UIAlertAction(title: "OK", style: .default) { action -> Void in
+        //                    }
+        //                    alert.addAction(okActionButton)
+        //                    self.present(alert, animated: true, completion: nil)
+        //                }
+        //                else
+        //                {
+        //                    selecttedImage = false
+        //                    self.openAlertPopup()
+        //                }
+        //            }
+        //        }
         
     }
     

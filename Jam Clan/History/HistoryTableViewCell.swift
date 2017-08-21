@@ -9,6 +9,11 @@
 import UIKit
 
 class HistoryTableViewCell: UITableViewCell {
+    
+    @IBOutlet var imageTopLine:UIImageView!
+    @IBOutlet var imageDot:UIImageView!
+    @IBOutlet var imageBottomLine:UIImageView!
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

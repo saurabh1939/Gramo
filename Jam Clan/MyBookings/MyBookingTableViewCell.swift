@@ -15,6 +15,13 @@ class MyBookingTableViewCell: UITableViewCell {
     @IBOutlet var labelTime : UILabel!
     @IBOutlet var labelBookingid : UILabel!
     @IBOutlet var buttonCancel : UIButton!
+    
+    @IBOutlet var viewOwnerBottom : UIView!
+    @IBOutlet var buttonOwnerCancel : UIButton!
+    @IBOutlet var buttonOwnerTickets : UIButton!
+    @IBOutlet var buttonOwnerAccept : UIButton!
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

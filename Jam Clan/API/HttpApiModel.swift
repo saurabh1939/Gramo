@@ -1,9 +1,10 @@
+
 //
 //  HttpApiModel.swift
-//  Ela
+//  Jam Clan
 //
-//  Created by Prima Business on 12/12/16.
-//  Copyright © 2016 CareOnGo. All rights reserved.
+//  Created by Saurabh singh rathore on 26/07/17.
+//  Copyright © 2017 Saurabh singh rathore. All rights reserved.
 //
 
 import UIKit

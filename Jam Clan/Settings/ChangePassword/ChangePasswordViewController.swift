@@ -9,11 +9,31 @@
 import UIKit
 
 class ChangePasswordViewController: UIViewController {
+    
+    
+    @IBOutlet var buttonbuttonDone:UIButton!
+
+    @IBOutlet var buttonOldPass:UIButton!
+    @IBOutlet var buttonNewPass:UIButton!
+    @IBOutlet var buttonConfirmPass:UIButton!
+
+    
+    @IBOutlet var textOldPass:FloatLabelTextField!
+    @IBOutlet var textNewPass:FloatLabelTextField!
+    @IBOutlet var textConfirmPass:FloatLabelTextField!
+
+    
+    @IBOutlet var imageLineOldPass:UIImageView!
+    @IBOutlet var imageLineNewPass:UIImageView!
+    @IBOutlet var imageLineConfirmPass:UIImageView!
+
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setup()
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,15 +41,22 @@ class ChangePasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func buttonBackClicked()
+    {
+    self.navigationController?.popViewController(animated: true)
     }
-    */
+    
+
+    func setup()
+    {
+        
+        textOldPass.attributedPlaceholder = NSAttributedString(string: textOldPass.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.darkGray])
+        textNewPass.attributedPlaceholder = NSAttributedString(string: textNewPass.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.darkGray])
+        textConfirmPass.attributedPlaceholder = NSAttributedString(string: textConfirmPass.placeholder!, attributes: [NSForegroundColorAttributeName : UIColor.darkGray])
+
+        
+        
+    }
+
 
 }

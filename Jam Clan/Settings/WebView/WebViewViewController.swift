@@ -9,11 +9,16 @@
 import UIKit
 
 class WebViewViewController: UIViewController {
+    
+    var strWillAppear = NSString()
+    @IBOutlet var labelTitle:UILabel!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setup()
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,14 +27,22 @@ class WebViewViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+   func setup()
+    {
+    if strWillAppear=="policy"
+    {
+        labelTitle.text="Privacy Policy"
+        }
+        else
+    {
+        labelTitle.text="Terms and Conditions"
+        }
     }
-    */
-
+    
+    
+    @IBAction func buttonBackClicked()
+    {
+    self.navigationController?.popViewController(animated: true)
+    }
+    
 }

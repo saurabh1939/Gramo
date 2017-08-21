@@ -89,7 +89,7 @@ open class Floaty: UIView {
     /**
         Background overlaying color.
     */
-    @IBInspectable open var overlayColor: UIColor = UIColor.black.withAlphaComponent(0.3)
+    @IBInspectable open var overlayColor: UIColor = UIColor.black.withAlphaComponent(0.6)
 
     /**
         The space between the item and item.
@@ -530,6 +530,7 @@ open class Floaty: UIView {
     fileprivate func setTintLayer() {
         tintLayer.frame = CGRect(x: circleLayer.frame.origin.x, y: circleLayer.frame.origin.y, width: size, height: size)
         tintLayer.backgroundColor = UIColor.white.withAlphaComponent(0.2).cgColor
+
         tintLayer.cornerRadius = size/2
         layer.addSublayer(tintLayer)
     }
