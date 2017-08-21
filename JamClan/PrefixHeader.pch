@@ -1,0 +1,19 @@
+//
+//  PrefixHeader.pch
+//  Jam Clan
+//
+//  Created by Saurabh singh rathore on 24/04/17.
+//  Copyright © 2017 Saurabh singh rathore. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
+
+
+#define screen_width ([[UIScreen mainScreen] bounds].size.width)
+#define screen_height ([[UIScreen mainScreen] bounds].size.height)
